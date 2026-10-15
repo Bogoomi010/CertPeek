@@ -338,12 +338,14 @@ export default function App() {
               >
                 <TextFieldInput ref={passwordRef} type="password" autoFocus />
               </TextField>
-              <ActionButton type="submit" variant="brandSolid" size="medium">
-                {t.open}
-              </ActionButton>
-              <ActionButton type="button" variant="neutralWeak" size="small" onClick={reset}>
-                {t.chooseAnother}
-              </ActionButton>
+              <HStack gap="x2" justifyContent="flex-end">
+                <ActionButton type="button" variant="neutralWeak" size="medium" onClick={reset}>
+                  {t.cancel}
+                </ActionButton>
+                <ActionButton type="submit" variant="brandSolid" size="medium">
+                  {t.open}
+                </ActionButton>
+              </HStack>
             </VStack>
           </form>
         </VStack>
