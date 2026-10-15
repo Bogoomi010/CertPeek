@@ -1,11 +1,23 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Certificate Viewer</title>
     <style>
       body { margin: 0; }
+      /* Full-window drop target: Seed's dropzone box stretched to the window, dashed frame always visible. */
+      #root .drop-area {
+        height: auto;
+        margin: 0 12px 12px;
+        border: 2px dashed var(--seed-color-palette-gray-500);
+        border-radius: var(--seed-radius-r3);
+        transition: border-color 0.2s, background-color 0.2s;
+      }
+      #root .drop-area[data-dragging-over] {
+        border-color: var(--seed-color-stroke-brand-solid);
+        background-color: var(--seed-color-bg-brand-weak);
+      }
     </style>
   </head>
 

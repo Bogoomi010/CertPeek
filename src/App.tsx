@@ -1,16 +1,25 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { Box, HStack, Icon, Text, VStack } from "@seed-design/react";
 import {
+  AttachmentInput as SeedAttachmentInput,
+  Box,
+  HStack,
+  Icon,
+  PrefixIcon,
+  Text,
+  VStack,
+  useAttachmentInputContext,
+} from "@seed-design/react";
+import {
+  IconArrowUpBracketDownFill,
   IconChevronLeftLine,
   IconKeyholeShieldFill,
   IconMinusLine,
   IconXmarkLine,
 } from "@karrotmarket/react-monochrome-icon";
 import { ActionButton } from "seed-design/ui/action-button";
-import { AttachmentDropzone, AttachmentField } from "seed-design/ui/attachment-field";
 import { Badge } from "seed-design/ui/badge";
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from "seed-design/ui/tabs";
 import { TextField, TextFieldInput } from "seed-design/ui/text-field";
@@ -87,33 +96,33 @@ function CertCard({ cert }: { cert: CertInfo }) {
           {cn(cert.subject)}
         </Text>
         <Badge tone={cert.is_valid_now ? "positive" : "critical"} variant="solid">
-          {cert.is_valid_now ? "유효" : "만료/미개시"}
+          {cert.is_valid_now ? "Valid" : "Expired / not yet valid"}
         </Badge>
         {cert.is_ca && <Badge tone="informative" variant="weak">CA</Badge>}
       </HStack>
 
-      <Section title="기본 정보">
+      <Section title="General">
         <Row label="Subject" value={cert.subject} />
         <Row label="Issuer" value={cert.issuer} />
         <Row label="Serial" value={cert.serial} mono />
         <Row label="Version" value={`V${cert.version}`} />
-        <Row label="유효 기간 시작" value={cert.not_before} />
-        <Row label="유효 기간 종료" value={cert.not_after} />
-        <Row label="서명 알고리즘" value={cert.signature_algorithm} />
-        <Row label="공개키" value={cert.public_key} />
+        <Row label="Valid from" value={cert.not_before} />
+        <Row label="Valid until" value={cert.not_after} />
+        <Row label="Signature algorithm" value={cert.signature_algorithm} />
+        <Row label="Public key" value={cert.public_key} />
       </Section>
 
-      <Section title="지문">
+      <Section title="Fingerprints">
         <Row label="SHA-256" value={cert.sha256} mono />
         <Row label="SHA-1" value={cert.sha1} mono />
       </Section>
 
-      <Section title="확장">
+      <Section title="Extensions">
         <Row label="SAN" value={cert.san.join(", ")} />
         <Row label="Key Usage" value={cert.key_usage.join(", ")} />
         <Row label="Extended Key Usage" value={cert.extended_key_usage.join(", ")} />
         <Row
-          label="전체 확장"
+          label="All extensions"
           value={cert.extensions.map((e) => (e.critical ? `${e.name} (critical)` : e.name)).join(", ")}
         />
       </Section>
@@ -132,10 +141,10 @@ function TitleBar() {
       px="x2"
       style={{ height: 36, flexShrink: 0, userSelect: "none" }}
     >
-      <WinButton label="창 내리기" onClick={() => void win()?.minimize()}>
+      <WinButton label="Minimize" onClick={() => void win()?.minimize()}>
         <IconMinusLine />
       </WinButton>
-      <WinButton label="앱 끄기" onClick={() => void win()?.close()}>
+      <WinButton label="Close" onClick={() => void win()?.close()}>
         <IconXmarkLine />
       </WinButton>
     </HStack>
@@ -168,13 +177,13 @@ function InfoScreen({ certs, onBack }: { certs: CertInfo[]; onBack: () => void }
             variant="neutralWeak"
             size="small"
             layout="iconOnly"
-            aria-label="첨부 화면으로 돌아가기"
+            aria-label="Back to file picker"
             onClick={onBack}
           >
             <Icon svg={<IconChevronLeftLine />} />
           </ActionButton>
           <Text as="h1" textStyle="t7Bold" color="fg.neutral">
-            인증서 정보
+            Certificate details
           </Text>
         </HStack>
 
@@ -203,12 +212,65 @@ function InfoScreen({ certs, onBack }: { certs: CertInfo[]; onBack: () => void }
   );
 }
 
+function Header({ subtitle }: { subtitle: string }) {
+  return (
+    <VStack gap="x3" alignItems="center">
+      <Box bg="bg.brandWeak" borderRadius="full" p="x3" display="flex">
+        <Icon svg={<IconKeyholeShieldFill />} size="x8" color="fg.brand" />
+      </Box>
+      <Text as="h1" textStyle="t7Bold" color="fg.neutral">
+        Certificate Viewer
+      </Text>
+      <Text textStyle="t4Regular" color="fg.neutralSubtle" style={{ textAlign: "center" }}>
+        {subtitle}
+      </Text>
+    </VStack>
+  );
+}
+
+// The whole window below the title bar is the drop target (see .drop-area in index.html).
+function DropArea({ error }: { error?: string }) {
+  const { triggerProps } = useAttachmentInputContext();
+  return (
+    <SeedAttachmentInput.Dropzone asChild className="drop-area">
+      <VStack gap="x5" px="x6" pb="x6" justifyContent="center" alignItems="center" style={{ flex: 1, minHeight: 0 }}>
+        <Header subtitle="PEM, DER or PKCS#12 (.cer .crt .pem .der .pfx .p12)" />
+        <VStack gap="x2" alignItems="center">
+          <ActionButton variant="brandSolid" size="medium" layout="withText" {...triggerProps}>
+            <PrefixIcon svg={<IconArrowUpBracketDownFill />} />
+            Choose file
+          </ActionButton>
+          <SeedAttachmentInput.DropzoneLabel>or drop it anywhere in this window</SeedAttachmentInput.DropzoneLabel>
+        </VStack>
+        {error && (
+          <Text textStyle="t4Regular" color="fg.critical" style={{ textAlign: "center", wordBreak: "break-all" }}>
+            {error}
+          </Text>
+        )}
+      </VStack>
+    </SeedAttachmentInput.Dropzone>
+  );
+}
+
 export default function App() {
   const [certs, setCerts] = useState<CertInfo[]>([]);
+  // Bumped after a failed parse to remount the file input: Seed keeps the rejected entry otherwise
+  // and maxFiles=1 would refuse the next pick.
+  const [attempt, setAttempt] = useState(0);
   const [error, setError] = useState<string>();
   // PKCS#12 file waiting for a password; null when no prompt is needed.
   const [locked, setLocked] = useState<{ name: string; data: number[] } | null>(null);
   const [password, setPassword] = useState("");
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  // After a file dialog / Explorer drag the OS focus is elsewhere, so autoFocus alone does nothing:
+  // pull the window to the front first, then focus the password input.
+  useEffect(() => {
+    if (!locked) return;
+    const focus = () => passwordRef.current?.focus();
+    if ("__TAURI_INTERNALS__" in window) getCurrentWindow().setFocus().then(focus, focus);
+    else focus();
+  }, [locked]);
 
   const reset = () => {
     setCerts([]);
@@ -226,7 +288,7 @@ export default function App() {
     } catch (e) {
       setCerts([]);
       if (String(e) === "WRONG_PASSWORD") {
-        setError(pw === undefined ? undefined : "비밀번호가 올바르지 않습니다.");
+        setError(pw === undefined ? undefined : "Incorrect password.");
         setLocked({ name, data });
       } else {
         setError(String(e));
@@ -258,28 +320,9 @@ export default function App() {
       style={{ height: "100vh", overflow: "hidden", display: "flex", flexDirection: "column" }}
     >
       <TitleBar />
-      <VStack
-        gap="x5"
-        px="x6"
-        pb="x6"
-        justifyContent="center"
-        style={{ flex: 1, minHeight: 0, boxSizing: "border-box", overflowY: "auto" }}
-      >
-        <VStack gap="x3" alignItems="center">
-          <Box bg="bg.brandWeak" borderRadius="full" p="x3" display="flex">
-            <Icon svg={<IconKeyholeShieldFill />} size="x8" color="fg.brand" />
-          </Box>
-          <Text as="h1" textStyle="t7Bold" color="fg.neutral">
-            인증서 뷰어
-          </Text>
-          <Text textStyle="t4Regular" color="fg.neutralSubtle" style={{ textAlign: "center" }}>
-            {locked
-              ? `${locked.name} 파일은 비밀번호로 보호되어 있습니다.`
-              : "PEM, DER 또는 PKCS#12 (.cer .crt .pem .der .pfx .p12)"}
-          </Text>
-        </VStack>
-
-        {locked ? (
+      {locked ? (
+        <VStack gap="x5" px="x6" pb="x6" justifyContent="center" style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
+          <Header subtitle={`${locked.name} is password protected.`} />
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -288,40 +331,39 @@ export default function App() {
           >
             <VStack gap="x3">
               <TextField
-                label="PKCS#12 비밀번호"
+                label="PKCS#12 password"
                 value={password}
                 onValueChange={({ value }) => setPassword(value)}
                 errorMessage={error}
                 invalid={!!error}
               >
-                <TextFieldInput type="password" autoFocus />
+                <TextFieldInput ref={passwordRef} type="password" autoFocus />
               </TextField>
               <ActionButton type="submit" variant="brandSolid" size="medium">
-                열기
+                Open
               </ActionButton>
               <ActionButton type="button" variant="neutralWeak" size="small" onClick={reset}>
-                다른 파일 선택
+                Choose another file
               </ActionButton>
             </VStack>
           </form>
-        ) : (
-          <AttachmentField
-            maxFiles={1}
-            accept=".cer,.crt,.pem,.der,.pfx,.p12"
-            label="인증서 파일"
-            errorMessage={error}
-            invalid={!!error}
-            onAcceptedFileEntriesChange={(entries) => entries.length === 0 && reset()}
-            onFileAccept={async ([entry], { updateFileEntryStatus }) => {
-              const data = Array.from(new Uint8Array(await entry.file.arrayBuffer()));
-              const ok = await load(entry.file.name, data);
-              updateFileEntryStatus(entry.id, { status: ok ? "success" : "error" });
-            }}
-          >
-            <AttachmentDropzone />
-          </AttachmentField>
-        )}
-      </VStack>
+        </VStack>
+      ) : (
+        <SeedAttachmentInput.Root
+          key={attempt}
+          maxFiles={1}
+          accept=".cer,.crt,.pem,.der,.pfx,.p12"
+          invalid={!!error}
+          onFileAccept={async ([entry]) => {
+            const data = Array.from(new Uint8Array(await entry.file.arrayBuffer()));
+            if (!(await load(entry.file.name, data))) setAttempt((a) => a + 1);
+          }}
+          style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}
+        >
+          <DropArea error={error} />
+          <SeedAttachmentInput.HiddenInput />
+        </SeedAttachmentInput.Root>
+      )}
     </Box>
   );
 }
