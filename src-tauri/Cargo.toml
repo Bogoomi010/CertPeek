@@ -1,6 +1,6 @@
 [package]
 name = "cert-viewer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Certificate viewer desktop app"
 authors = ["kbk <kimbk7969@gmail.com>"]
 license = "MIT"

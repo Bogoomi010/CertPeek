@@ -15,12 +15,12 @@ import {
 import {
   IconArrowUpBracketDownFill,
   IconChevronLeftLine,
-  IconKeyholeShieldFill,
   IconMinusLine,
   IconXmarkLine,
 } from "@karrotmarket/react-monochrome-icon";
 import { ActionButton } from "seed-design/ui/action-button";
 import { t } from "./strings";
+import appIcon from "../app-icon.svg";
 import { Badge } from "seed-design/ui/badge";
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from "seed-design/ui/tabs";
 import { TextField, TextFieldInput } from "seed-design/ui/text-field";
@@ -216,9 +216,7 @@ function InfoScreen({ certs, onBack }: { certs: CertInfo[]; onBack: () => void }
 function Header({ subtitle }: { subtitle: string }) {
   return (
     <VStack gap="x3" alignItems="center">
-      <Box bg="bg.brandWeak" borderRadius="full" p="x3" display="flex">
-        <Icon svg={<IconKeyholeShieldFill />} size="x8" color="fg.brand" />
-      </Box>
+      <img src={appIcon} width={72} height={72} alt="" style={{ borderRadius: 16 }} />
       <Text as="h1" textStyle="t7Bold" color="fg.neutral">
         {t.appTitle}
       </Text>
