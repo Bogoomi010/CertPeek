@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code personal settings (launch.json stays tracked)
+.claude/*
+!.claude/launch.json
+
+# Renamed installers collected by the release workflow
+release
+
+# Real certificates / private keys must never land in the repo; test fixtures are the only exception
+*.pfx
+*.p12
+*.key
+!src-tauri/tests/fixtures/*
