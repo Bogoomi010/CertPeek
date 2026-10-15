@@ -69,7 +69,14 @@ Certificate Viewer shows the details as soon as you drop the file onto the windo
 
 ## Install
 
-Download the installer from [Releases](../../releases), or build it yourself as described below.
+Windows 10 or later, 64-bit. Pick a language; the UI language is fixed per build.
+
+| | Download |
+|---|---|
+| 🇺🇸 English | [CertificateViewer-en-x64-setup.exe](../../releases/latest/download/CertificateViewer-en-x64-setup.exe) |
+| 🇰🇷 한국어 | [CertificateViewer-ko-x64-setup.exe](../../releases/latest/download/CertificateViewer-ko-x64-setup.exe) |
+
+All versions are on the [Releases](../../releases) page. Or build it yourself as described below.
 
 ## Development
 
@@ -83,10 +90,13 @@ Requirements: [Node.js](https://nodejs.org) 20+, [Yarn](https://classic.yarnpkg.
 ## Build
 
 ```bash
-yarn tauri build
+yarn build:en   # English UI
+yarn build:ko   # Korean UI
 ```
 
-Installers are written to `src-tauri/target/release/bundle/`.
+Installers are written to `src-tauri/target/release/bundle/nsis/`. The language is chosen at build time: `build:ko` runs Vite with `--mode ko`, which loads `.env.ko` and bundles only the Korean strings from `src/strings.ts`.
+
+Pushing a `v*` tag builds both installers on GitHub Actions and attaches them to a release.
 
 ## Stack
 

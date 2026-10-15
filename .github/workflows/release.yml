@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+
+      - run: yarn install --frozen-lockfile
+
+      - name: Build (English)
+        run: yarn build:en
+
+      - name: Build (Korean)
+        run: yarn build:ko
+
+      # Stable asset names so README can link to releases/latest/download/<name>.
+      - name: Rename installers
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force release | Out-Null
+          Copy-Item "src-tauri/target/release/bundle/nsis/Certificate Viewer_*-setup.exe" release/CertificateViewer-en-x64-setup.exe
+          Copy-Item "src-tauri/target/release/bundle/nsis/Certificate Viewer KO_*-setup.exe" release/CertificateViewer-ko-x64-setup.exe
+          Get-ChildItem release
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release/*
+          generate_release_notes: true

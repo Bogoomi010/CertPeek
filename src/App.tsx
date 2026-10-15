@@ -20,6 +20,7 @@ import {
   IconXmarkLine,
 } from "@karrotmarket/react-monochrome-icon";
 import { ActionButton } from "seed-design/ui/action-button";
+import { t } from "./strings";
 import { Badge } from "seed-design/ui/badge";
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from "seed-design/ui/tabs";
 import { TextField, TextFieldInput } from "seed-design/ui/text-field";
@@ -96,33 +97,33 @@ function CertCard({ cert }: { cert: CertInfo }) {
           {cn(cert.subject)}
         </Text>
         <Badge tone={cert.is_valid_now ? "positive" : "critical"} variant="solid">
-          {cert.is_valid_now ? "Valid" : "Expired / not yet valid"}
+          {cert.is_valid_now ? t.valid : t.invalid}
         </Badge>
         {cert.is_ca && <Badge tone="informative" variant="weak">CA</Badge>}
       </HStack>
 
-      <Section title="General">
+      <Section title={t.general}>
         <Row label="Subject" value={cert.subject} />
         <Row label="Issuer" value={cert.issuer} />
         <Row label="Serial" value={cert.serial} mono />
         <Row label="Version" value={`V${cert.version}`} />
-        <Row label="Valid from" value={cert.not_before} />
-        <Row label="Valid until" value={cert.not_after} />
-        <Row label="Signature algorithm" value={cert.signature_algorithm} />
-        <Row label="Public key" value={cert.public_key} />
+        <Row label={t.validFrom} value={cert.not_before} />
+        <Row label={t.validUntil} value={cert.not_after} />
+        <Row label={t.signatureAlgorithm} value={cert.signature_algorithm} />
+        <Row label={t.publicKey} value={cert.public_key} />
       </Section>
 
-      <Section title="Fingerprints">
+      <Section title={t.fingerprints}>
         <Row label="SHA-256" value={cert.sha256} mono />
         <Row label="SHA-1" value={cert.sha1} mono />
       </Section>
 
-      <Section title="Extensions">
+      <Section title={t.extensions}>
         <Row label="SAN" value={cert.san.join(", ")} />
         <Row label="Key Usage" value={cert.key_usage.join(", ")} />
         <Row label="Extended Key Usage" value={cert.extended_key_usage.join(", ")} />
         <Row
-          label="All extensions"
+          label={t.allExtensions}
           value={cert.extensions.map((e) => (e.critical ? `${e.name} (critical)` : e.name)).join(", ")}
         />
       </Section>
@@ -141,10 +142,10 @@ function TitleBar() {
       px="x2"
       style={{ height: 36, flexShrink: 0, userSelect: "none" }}
     >
-      <WinButton label="Minimize" onClick={() => void win()?.minimize()}>
+      <WinButton label={t.minimize} onClick={() => void win()?.minimize()}>
         <IconMinusLine />
       </WinButton>
-      <WinButton label="Close" onClick={() => void win()?.close()}>
+      <WinButton label={t.close} onClick={() => void win()?.close()}>
         <IconXmarkLine />
       </WinButton>
     </HStack>
@@ -177,13 +178,13 @@ function InfoScreen({ certs, onBack }: { certs: CertInfo[]; onBack: () => void }
             variant="neutralWeak"
             size="small"
             layout="iconOnly"
-            aria-label="Back to file picker"
+            aria-label={t.back}
             onClick={onBack}
           >
             <Icon svg={<IconChevronLeftLine />} />
           </ActionButton>
           <Text as="h1" textStyle="t7Bold" color="fg.neutral">
-            Certificate details
+            {t.details}
           </Text>
         </HStack>
 
@@ -219,7 +220,7 @@ function Header({ subtitle }: { subtitle: string }) {
         <Icon svg={<IconKeyholeShieldFill />} size="x8" color="fg.brand" />
       </Box>
       <Text as="h1" textStyle="t7Bold" color="fg.neutral">
-        Certificate Viewer
+        {t.appTitle}
       </Text>
       <Text textStyle="t4Regular" color="fg.neutralSubtle" style={{ textAlign: "center" }}>
         {subtitle}
@@ -234,13 +235,13 @@ function DropArea({ error }: { error?: string }) {
   return (
     <SeedAttachmentInput.Dropzone asChild className="drop-area">
       <VStack gap="x5" px="x6" pb="x6" justifyContent="center" alignItems="center" style={{ flex: 1, minHeight: 0 }}>
-        <Header subtitle="PEM, DER or PKCS#12 (.cer .crt .pem .der .pfx .p12)" />
+        <Header subtitle={t.formats} />
         <VStack gap="x2" alignItems="center">
           <ActionButton variant="brandSolid" size="medium" layout="withText" {...triggerProps}>
             <PrefixIcon svg={<IconArrowUpBracketDownFill />} />
-            Choose file
+            {t.chooseFile}
           </ActionButton>
-          <SeedAttachmentInput.DropzoneLabel>or drop it anywhere in this window</SeedAttachmentInput.DropzoneLabel>
+          <SeedAttachmentInput.DropzoneLabel>{t.dropHint}</SeedAttachmentInput.DropzoneLabel>
         </VStack>
         {error && (
           <Text textStyle="t4Regular" color="fg.critical" style={{ textAlign: "center", wordBreak: "break-all" }}>
@@ -288,7 +289,7 @@ export default function App() {
     } catch (e) {
       setCerts([]);
       if (String(e) === "WRONG_PASSWORD") {
-        setError(pw === undefined ? undefined : "Incorrect password.");
+        setError(pw === undefined ? undefined : t.wrongPassword);
         setLocked({ name, data });
       } else {
         setError(String(e));
@@ -322,7 +323,7 @@ export default function App() {
       <TitleBar />
       {locked ? (
         <VStack gap="x5" px="x6" pb="x6" justifyContent="center" style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
-          <Header subtitle={`${locked.name} is password protected.`} />
+          <Header subtitle={t.passwordProtected(locked.name)} />
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -331,7 +332,7 @@ export default function App() {
           >
             <VStack gap="x3">
               <TextField
-                label="PKCS#12 password"
+                label={t.passwordLabel}
                 value={password}
                 onValueChange={({ value }) => setPassword(value)}
                 errorMessage={error}
@@ -340,10 +341,10 @@ export default function App() {
                 <TextFieldInput ref={passwordRef} type="password" autoFocus />
               </TextField>
               <ActionButton type="submit" variant="brandSolid" size="medium">
-                Open
+                {t.open}
               </ActionButton>
               <ActionButton type="button" variant="neutralWeak" size="small" onClick={reset}>
-                Choose another file
+                {t.chooseAnother}
               </ActionButton>
             </VStack>
           </form>

@@ -9,7 +9,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "dev:ko": "tauri dev --config src-tauri/tauri.ko.conf.json",
+    "build:en": "tauri build",
+    "build:ko": "tauri build --config src-tauri/tauri.ko.conf.json"
   },
   "dependencies": {
     "@karrotmarket/react-monochrome-icon": "^1.29.0",
