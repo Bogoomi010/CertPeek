@@ -330,6 +330,7 @@ export default function App() {
           >
             <VStack gap="x3">
               <TextField
+                size="medium"
                 label={t.passwordLabel}
                 value={password}
                 onValueChange={({ value }) => setPassword(value)}
@@ -339,10 +340,10 @@ export default function App() {
                 <TextFieldInput ref={passwordRef} type="password" autoFocus />
               </TextField>
               <HStack gap="x2">
-                <ActionButton type="button" variant="neutralWeak" size="large" onClick={reset} style={{ flex: 1 }}>
+                <ActionButton type="button" variant="neutralWeak" size="medium" onClick={reset} style={{ flex: 1 }}>
                   {t.cancel}
                 </ActionButton>
-                <ActionButton type="submit" variant="brandSolid" size="large" style={{ flex: 1 }}>
+                <ActionButton type="submit" variant="brandSolid" size="medium" style={{ flex: 1 }}>
                   {t.open}
                 </ActionButton>
               </HStack>
