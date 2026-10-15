@@ -12,10 +12,10 @@
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Rust](https://img.shields.io/badge/Rust-x509--parser-000000?style=flat-square&logo=rust&logoColor=white)](https://github.com/rusticata/x509-parser)
 [![Seed Design](https://img.shields.io/badge/UI-Seed%20Design-FF6F0F?style=flat-square)](https://seed-design.io)
-[![Windows](https://img.shields.io/badge/Windows-10%2B-0078D4?style=flat-square&logo=windows&logoColor=white)](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases)
+[![Windows](https://img.shields.io/badge/Windows-10%2B-0078D4?style=flat-square&logo=windows&logoColor=white)](https://github.com/Bogoomi010/CertPeek/releases)
 [![MIT license](https://img.shields.io/badge/license-MIT-f4c430?style=flat-square)](../../LICENSE)
 
-**[Releases](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases) · [Issues](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/issues)**
+**[Releases](https://github.com/Bogoomi010/CertPeek/releases) · [Issues](https://github.com/Bogoomi010/CertPeek/issues)**
 
 [왜 만들었나](#왜-만들었나) · [지원 형식](#지원-형식) · [표시 정보](#표시-정보) · [설치](#설치) · [개발](#개발) · [기술 스택](#기술-스택)
 
@@ -75,10 +75,10 @@ Windows 10 이상, 64비트. UI 언어는 빌드마다 고정되어 있으니 �
 
 | | 다운로드 |
 |---|---|
-| 🇺🇸 English | [CertPeek-en-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertPeek-en-x64-setup.exe) |
-| 🇰🇷 한국어 | [CertPeek-ko-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertPeek-ko-x64-setup.exe) |
+| 🇺🇸 English | [CertPeek-en-x64-setup.exe](https://github.com/Bogoomi010/CertPeek/releases/latest/download/CertPeek-en-x64-setup.exe) |
+| 🇰🇷 한국어 | [CertPeek-ko-x64-setup.exe](https://github.com/Bogoomi010/CertPeek/releases/latest/download/CertPeek-ko-x64-setup.exe) |
 
-모든 버전은 [Releases](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases)에 있습니다. 직접 빌드하려면 아래를 참고하세요.
+모든 버전은 [Releases](https://github.com/Bogoomi010/CertPeek/releases)에 있습니다. 직접 빌드하려면 아래를 참고하세요.
 
 ## 개발
 
