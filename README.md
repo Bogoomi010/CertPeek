@@ -1,5 +1,7 @@
 <div align="center">
 
+**English** · [한국어](docs/readme/README_ko.md)
+
 <img src="app-icon.svg" width="96" alt="Certificate Viewer" />
 
 # Certificate Viewer
