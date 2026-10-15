@@ -10,6 +10,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
+    "icons": "tauri icon app-icon.svg -o src-tauri/icons",
+    "postinstall": "yarn icons",
     "dev:ko": "tauri dev --config src-tauri/tauri.ko.conf.json",
     "build:en": "tauri build",
     "build:ko": "tauri build --config src-tauri/tauri.ko.conf.json"

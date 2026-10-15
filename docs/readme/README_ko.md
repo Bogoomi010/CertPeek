@@ -81,7 +81,7 @@ Windows 10 이상, 64비트. UI 언어는 빌드마다 고정되어 있으니 �
 ## 개발
 
 ```bash
-yarn install
+yarn install   # app-icon.svg에서 src-tauri/icons도 함께 생성됩니다
 yarn tauri dev
 ```
 

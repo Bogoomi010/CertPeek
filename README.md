@@ -81,7 +81,7 @@ All versions are on the [Releases](../../releases) page. Or build it yourself as
 ## Development
 
 ```bash
-yarn install
+yarn install   # also generates src-tauri/icons from app-icon.svg
 yarn tauri dev
 ```
 
