@@ -94,7 +94,7 @@ yarn build:en   # 영문 UI
 yarn build:ko   # 한국어 UI
 ```
 
-설치 파일은 `src-tauri/target/release/bundle/nsis/`에 생성됩니다. 언어는 빌드 시점에 정해집니다. `build:ko`는 Vite를 `--mode ko`로 실행해 `.env.ko`를 읽고, `src/strings.ts`의 한국어 문자열만 번들합니다.
+설치 파일은 `src-tauri/target/release/bundle/nsis/`에 생성됩니다. 언어는 빌드 시점에 정해집니다. `build:ko`는 Vite를 `--mode ko`로 실행하고, `vite.config.ts`가 그 모드로 `VITE_LANG`을 정해 `src/strings.ts`의 한국어 문자열만 번들합니다.
 
 `v*` 태그를 push하면 GitHub Actions가 두 설치 파일을 빌드해 Release에 첨부합니다.
 

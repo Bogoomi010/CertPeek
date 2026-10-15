@@ -23,9 +23,13 @@ dist-ssr
 *.sln
 *.sw?
 
-# Claude Code personal settings (launch.json stays tracked)
-.claude/*
-!.claude/launch.json
+# Claude Code files (local only)
+.claude/
+CLAUDE.md
+
+# Env files (the build language comes from vite --mode, not from .env)
+.env
+.env.*
 
 # Renamed installers collected by the release workflow
 release

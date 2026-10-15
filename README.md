@@ -94,7 +94,7 @@ yarn build:en   # English UI
 yarn build:ko   # Korean UI
 ```
 
-Installers are written to `src-tauri/target/release/bundle/nsis/`. The language is chosen at build time: `build:ko` runs Vite with `--mode ko`, which loads `.env.ko` and bundles only the Korean strings from `src/strings.ts`.
+Installers are written to `src-tauri/target/release/bundle/nsis/`. The language is chosen at build time: `build:ko` runs Vite with `--mode ko`, which sets `VITE_LANG` in `vite.config.ts` so only the Korean strings from `src/strings.ts` are bundled.
 
 Pushing a `v*` tag builds both installers on GitHub Actions and attaches them to a release.
 

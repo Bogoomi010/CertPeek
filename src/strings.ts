@@ -1,4 +1,4 @@
-// Language is fixed at build time: `vite --mode ko` loads .env.ko (VITE_LANG=ko); anything else is English.
+// Language is fixed at build time: vite.config.ts defines VITE_LANG from --mode ("ko" or "en").
 // ponytail: two builds instead of a runtime switcher; add a picker here if one is ever wanted.
 
 const en = {
