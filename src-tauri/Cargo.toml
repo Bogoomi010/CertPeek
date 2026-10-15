@@ -1,7 +1,7 @@
 [package]
 name = "cert-viewer"
-version = "0.1.1"
-description = "Certificate viewer desktop app"
+version = "0.2.0"
+description = "CertPeek: view certificate files without installing them"
 authors = ["kbk <kimbk7969@gmail.com>"]
 license = "MIT"
 edition = "2024"

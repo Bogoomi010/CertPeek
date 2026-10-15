@@ -3,7 +3,7 @@
 
 const en = {
   lang: "en",
-  appTitle: "Certificate Viewer",
+  appTitle: "CertPeek",
   formats: "PEM, DER or PKCS#12 (.cer .crt .pem .der .pfx .p12)",
   chooseFile: "Choose file",
   dropHint: "or drop it anywhere in this window",
@@ -30,7 +30,7 @@ const en = {
 
 const ko: typeof en = {
   lang: "ko",
-  appTitle: "인증서 뷰어",
+  appTitle: "CertPeek",
   formats: "PEM, DER 또는 PKCS#12 (.cer .crt .pem .der .pfx .p12)",
   chooseFile: "파일 선택",
   dropHint: "또는 창 어디에나 드래그해서 열기",

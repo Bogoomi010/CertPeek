@@ -2,9 +2,9 @@
 
 [English](../../README.md) · **한국어**
 
-<img src="../../app-icon.svg" width="96" alt="Certificate Viewer" />
+<img src="../../app-icon.svg" width="96" alt="CertPeek" />
 
-# Certificate Viewer
+# CertPeek
 
 ### 인증서 파일을 Windows에 등록하지 않고 바로 열어보는 데스크톱 앱
 
@@ -40,7 +40,7 @@
 
 Windows에서 `.cer` `.pfx` 파일을 더블클릭하면 인증서 **설치** 마법사가 뜹니다. 내용만 확인하고 싶을 뿐인데 어느 저장소에 넣을지부터 물어보고, 지문이나 SAN은 탭을 몇 번 더 눌러야 보입니다.
 
-Certificate Viewer는 파일을 창에 떨어뜨리면 바로 정보를 보여줍니다. 아무것도 설치하지 않으니 남의 인증서, 만료된 인증서, 확인만 하고 버릴 인증서도 부담 없이 열어볼 수 있습니다.
+CertPeek는 파일을 창에 떨어뜨리면 바로 정보를 보여줍니다. 아무것도 설치하지 않으니 남의 인증서, 만료된 인증서, 확인만 하고 버릴 인증서도 부담 없이 열어볼 수 있습니다.
 
 ## 왜 만들었나
 
@@ -75,8 +75,8 @@ Windows 10 이상, 64비트. UI 언어는 빌드마다 고정되어 있으니 �
 
 | | 다운로드 |
 |---|---|
-| 🇺🇸 English | [CertificateViewer-en-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertificateViewer-en-x64-setup.exe) |
-| 🇰🇷 한국어 | [CertificateViewer-ko-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertificateViewer-ko-x64-setup.exe) |
+| 🇺🇸 English | [CertPeek-en-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertPeek-en-x64-setup.exe) |
+| 🇰🇷 한국어 | [CertPeek-ko-x64-setup.exe](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases/latest/download/CertPeek-ko-x64-setup.exe) |
 
 모든 버전은 [Releases](https://github.com/Bogoomi010/Certificate-viewer-desktop-app/releases)에 있습니다. 직접 빌드하려면 아래를 참고하세요.
 

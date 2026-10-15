@@ -37,8 +37,8 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force release | Out-Null
-          Copy-Item "src-tauri/target/release/bundle/nsis/Certificate Viewer_*-setup.exe" release/CertificateViewer-en-x64-setup.exe
-          Copy-Item "src-tauri/target/release/bundle/nsis/Certificate Viewer KO_*-setup.exe" release/CertificateViewer-ko-x64-setup.exe
+          Copy-Item "src-tauri/target/release/bundle/nsis/CertPeek_*-setup.exe" release/CertPeek-en-x64-setup.exe
+          Copy-Item "src-tauri/target/release/bundle/nsis/CertPeek KO_*-setup.exe" release/CertPeek-ko-x64-setup.exe
           Get-ChildItem release
 
       - uses: softprops/action-gh-release@v2

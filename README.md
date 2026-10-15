@@ -2,11 +2,11 @@
 
 **English** · [한국어](docs/readme/README_ko.md)
 
-<img src="app-icon.svg" width="96" alt="Certificate Viewer" />
+<img src="app-icon.svg" width="96" alt="CertPeek" />
 
-# Certificate Viewer
+# CertPeek
 
-### View certificate files on Windows without installing them
+### Peek inside certificate files on Windows without installing them
 
 [![Tauri](https://img.shields.io/badge/Tauri-2-24C8D8?style=flat-square&logo=tauri&logoColor=white)](https://tauri.app)
 [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
@@ -40,7 +40,7 @@
 
 Double-clicking a `.cer` or `.pfx` file on Windows opens the certificate **import** wizard. You only wanted to read it, but Windows first asks which store to install it into, and the fingerprint or SAN is a few tabs away.
 
-Certificate Viewer shows the details as soon as you drop the file onto the window. Since nothing is installed, you can freely open certificates from other people, expired ones, or ones you just want to inspect and throw away.
+CertPeek shows the details as soon as you drop the file onto the window. Since nothing is installed, you can freely open certificates from other people, expired ones, or ones you just want to inspect and throw away.
 
 ## Why
 
@@ -75,8 +75,8 @@ Windows 10 or later, 64-bit. Pick a language; the UI language is fixed per build
 
 | | Download |
 |---|---|
-| 🇺🇸 English | [CertificateViewer-en-x64-setup.exe](../../releases/latest/download/CertificateViewer-en-x64-setup.exe) |
-| 🇰🇷 한국어 | [CertificateViewer-ko-x64-setup.exe](../../releases/latest/download/CertificateViewer-ko-x64-setup.exe) |
+| 🇺🇸 English | [CertPeek-en-x64-setup.exe](../../releases/latest/download/CertPeek-en-x64-setup.exe) |
+| 🇰🇷 한국어 | [CertPeek-ko-x64-setup.exe](../../releases/latest/download/CertPeek-ko-x64-setup.exe) |
 
 All versions are on the [Releases](../../releases) page. Or build it yourself as described below.
 
