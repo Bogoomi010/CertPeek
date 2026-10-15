@@ -1,20 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <!-- Seed brand (carrot) orange rounded square -->
   <rect width="1024" height="1024" rx="224" fill="#FF6F0F"/>
-  <!-- Shield with keyhole cutout -->
-  <path fill="#FFFFFF" fill-rule="evenodd" d="
-    M512 176
-    L772 272
-    V512
-    C772 672 660 784 512 848
-    C364 784 252 672 252 512
-    V272
-    Z
-    M512 428
-    A64 64 0 0 0 480 547
-    L456 648
-    H568
-    L544 547
-    A64 64 0 0 0 512 428
-    Z"/>
+  <!-- Certificate: card, inner border, text lines, scalloped seal with ribbon -->
+  <rect x="128" y="232" width="768" height="528" rx="48" fill="#fff"/>
+  <rect x="184" y="288" width="656" height="416" rx="24" fill="none" stroke="#FF6F0F" stroke-width="16"/>
+  <rect x="248" y="360" width="360" height="28" rx="14" fill="#FF6F0F"/>
+  <rect x="248" y="424" width="260" height="28" rx="14" fill="#FF6F0F"/>
+  <rect x="248" y="488" width="160" height="28" rx="14" fill="#FF6F0F"/>
+  <polygon points="658,637 658,860 708,817 758,860 758,637" fill="#fff" stroke="#FF6F0F" stroke-width="14" stroke-linejoin="round"/>
+  <polygon points="832,600 808,620 823,647 793,656 796,688 764,685 755,715 728,700 708,724 688,700 661,715 652,685 620,688 623,656 593,647 608,620 584,600 608,580 593,553 623,544 620,512 652,515 661,485 688,500 708,476 728,500 755,485 764,515 796,512 793,544 823,553 808,580" fill="#fff" stroke="#FF6F0F" stroke-width="14" stroke-linejoin="round"/>
+  <circle cx="708" cy="600" r="68" fill="#FF6F0F"/>
+  <path d="M671 604 L697 630 L745 570" fill="none" stroke="#fff" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
