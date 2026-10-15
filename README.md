@@ -28,4 +28,4 @@ yarn tauri build
 
 ## 라이선스
 
-[MIT](LICENSE)
+[MIT](LICENSE). 번들된 서드파티(Seed Design, Apache-2.0) 고지는 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)에 있습니다.
