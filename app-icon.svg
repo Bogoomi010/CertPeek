@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <!-- Seed brand (carrot) orange rounded square -->
+  <rect width="1024" height="1024" rx="224" fill="#FF6F0F"/>
+  <!-- Shield with keyhole cutout -->
+  <path fill="#FFFFFF" fill-rule="evenodd" d="
+    M512 176
+    L772 272
+    V512
+    C772 672 660 784 512 848
+    C364 784 252 672 252 512
+    V272
+    Z
+    M512 428
+    A64 64 0 0 0 480 547
+    L456 648
+    H568
+    L544 547
+    A64 64 0 0 0 512 428
+    Z"/>
+</svg>
