@@ -28,9 +28,7 @@
 
 <br />
 
-<img src="docs/assets/upload.jpg" width="360" alt="Drop screen" />
-&nbsp;&nbsp;
-<img src="docs/assets/info.jpg" width="520" alt="Certificate details screen" />
+<img src="docs/assets/hero.png" width="920" alt="CertPeek: drop screen and certificate details" />
 
 <br /><br />
 

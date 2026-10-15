@@ -28,9 +28,7 @@
 
 <br />
 
-<img src="../assets/upload.jpg" width="360" alt="첨부 화면" />
-&nbsp;&nbsp;
-<img src="../assets/info.jpg" width="520" alt="인증서 정보 화면" />
+<img src="../assets/hero.png" width="920" alt="CertPeek: 첨부 화면과 인증서 정보 화면" />
 
 <br /><br />
 
