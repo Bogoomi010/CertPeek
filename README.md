@@ -17,7 +17,7 @@
 
 **[Releases](../../releases) · [Issues](../../issues)**
 
-[Why](#why) · [Supported formats](#supported-formats) · [What it shows](#what-it-shows) · [Install](#install) · [Development](#development) · [Stack](#stack)
+[Why](#why) · [Supported formats](#supported-formats) · [What it shows](#what-it-shows) · [Install](#install) · [Development](#development) · [Architecture](#architecture) · [Stack](#stack)
 
 </div>
 
@@ -97,6 +97,52 @@ yarn build:ko   # Korean UI
 Installers are written to `src-tauri/target/release/bundle/nsis/`. The language is chosen at build time: `build:ko` runs Vite with `--mode ko`, which sets `VITE_LANG` in `vite.config.ts` so only the Korean strings from `src/strings.ts` are bundled.
 
 Pushing a `v*` tag builds both installers on GitHub Actions and attaches them to a release.
+
+## Architecture
+
+```mermaid
+flowchart TB
+    user((User))
+
+    subgraph entry["App entry"]
+        tauri["Tauri runtime<br/>lib.rs"]
+        react["React mount<br/>main.tsx"]
+    end
+
+    subgraph ui["Certificate interface"]
+        app["Drop & details UI<br/>App.tsx"]
+        copy["Copy row / Copy all<br/>App.tsx"]
+        seed["Seed Design wrappers<br/>seed-design/ui"]
+        strings["Build-time strings<br/>strings.ts"]
+    end
+
+    subgraph backend["Parsing backend (Rust)"]
+        cmd["parse_cert command<br/>lib.rs"]
+        detect["Format detection<br/>PEM · DER · PKCS#35;12"]
+        fields["Field extraction<br/>subject, validity, SAN, fingerprints"]
+    end
+
+    x509[["x509-parser"]]
+    p12[["p12-keystore"]]
+    result[("CertInfo[]")]
+
+    user -- "drops / picks a file" --> app
+    react -- renders --> app
+    tauri -- "registers command" --> cmd
+    app --> copy
+    app --> seed
+    app --> strings
+    app -- "invoke(parse_cert, bytes, password?)" --> cmd
+    cmd --> detect
+    detect -- "PEM / DER" --> x509
+    detect -- "PKCS#35;12 (password)" --> p12
+    x509 --> fields
+    p12 --> fields
+    fields --> result
+    result -- "tabs + tables" --> app
+```
+
+The file never leaves the machine: the webview reads it, hands the bytes to the Rust command, and renders what comes back.
 
 ## Stack
 

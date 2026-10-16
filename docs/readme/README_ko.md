@@ -17,7 +17,7 @@
 
 **[Releases](https://github.com/Bogoomi010/CertPeek/releases) · [Issues](https://github.com/Bogoomi010/CertPeek/issues)**
 
-[왜 만들었나](#왜-만들었나) · [지원 형식](#지원-형식) · [표시 정보](#표시-정보) · [설치](#설치) · [개발](#개발) · [기술 스택](#기술-스택)
+[왜 만들었나](#왜-만들었나) · [지원 형식](#지원-형식) · [표시 정보](#표시-정보) · [설치](#설치) · [개발](#개발) · [구조](#구조) · [기술 스택](#기술-스택)
 
 </div>
 
@@ -97,6 +97,52 @@ yarn build:ko   # 한국어 UI
 설치 파일은 `src-tauri/target/release/bundle/nsis/`에 생성됩니다. 언어는 빌드 시점에 정해집니다. `build:ko`는 Vite를 `--mode ko`로 실행하고, `vite.config.ts`가 그 모드로 `VITE_LANG`을 정해 `src/strings.ts`의 한국어 문자열만 번들합니다.
 
 `v*` 태그를 push하면 GitHub Actions가 두 설치 파일을 빌드해 Release에 첨부합니다.
+
+## 구조
+
+```mermaid
+flowchart TB
+    user((사용자))
+
+    subgraph entry["앱 진입"]
+        tauri["Tauri 런타임<br/>lib.rs"]
+        react["React 마운트<br/>main.tsx"]
+    end
+
+    subgraph ui["인증서 화면"]
+        app["첨부 · 정보 화면<br/>App.tsx"]
+        copy["행 복사 / 전체 복사<br/>App.tsx"]
+        seed["Seed Design 래퍼<br/>seed-design/ui"]
+        strings["빌드 시 고정 문자열<br/>strings.ts"]
+    end
+
+    subgraph backend["파싱 백엔드 (Rust)"]
+        cmd["parse_cert 커맨드<br/>lib.rs"]
+        detect["형식 판별<br/>PEM · DER · PKCS#35;12"]
+        fields["필드 추출<br/>subject, 유효기간, SAN, 지문"]
+    end
+
+    x509[["x509-parser"]]
+    p12[["p12-keystore"]]
+    result[("CertInfo[]")]
+
+    user -- "파일 드롭 / 선택" --> app
+    react -- 렌더링 --> app
+    tauri -- "커맨드 등록" --> cmd
+    app --> copy
+    app --> seed
+    app --> strings
+    app -- "invoke(parse_cert, bytes, password?)" --> cmd
+    cmd --> detect
+    detect -- "PEM / DER" --> x509
+    detect -- "PKCS#35;12 (비밀번호)" --> p12
+    x509 --> fields
+    p12 --> fields
+    fields --> result
+    result -- "탭 + 표" --> app
+```
+
+파일은 PC 밖으로 나가지 않습니다. 웹뷰가 읽어 Rust 커맨드에 바이트를 넘기고, 돌아온 결과만 그립니다.
 
 ## 기술 스택
 
