@@ -168,7 +168,7 @@ function CertCard({ cert }: { cert: CertInfo }) {
           {cert.is_valid_now ? t.valid : t.invalid}
         </Badge>
         {cert.is_ca && <Badge tone="informative" variant="weak">CA</Badge>}
-        <ActionButton variant="neutralWeak" size="small" layout="withText" onClick={() => copyAll(allText)} style={{ marginLeft: "auto" }}>
+        <ActionButton variant="brandSolid" size="small" layout="withText" onClick={() => copyAll(allText)} style={{ marginLeft: "auto" }}>
           <PrefixIcon svg={copiedAll ? <IconCheckmarkLine /> : <IconCopy />} />
           {copiedAll ? t.copied : t.copyAll}
         </ActionButton>
