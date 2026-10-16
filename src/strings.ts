@@ -26,6 +26,9 @@ const en = {
   signatureAlgorithm: "Signature algorithm",
   publicKey: "Public key",
   allExtensions: "All extensions",
+  copy: "Copy",
+  copied: "Copied",
+  copyAll: "Copy all",
 };
 
 const ko: typeof en = {
@@ -53,6 +56,9 @@ const ko: typeof en = {
   signatureAlgorithm: "서명 알고리즘",
   publicKey: "공개키",
   allExtensions: "전체 확장",
+  copy: "복사",
+  copied: "복사됨",
+  copyAll: "전체 복사",
 };
 
 export const t = import.meta.env.VITE_LANG === "ko" ? ko : en;

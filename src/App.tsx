@@ -14,6 +14,7 @@ import {
 } from "@seed-design/react";
 import {
   IconArrowUpBracketDownFill,
+  IconCheckmarkLine,
   IconChevronLeftLine,
   IconMinusLine,
   IconXmarkLine,
@@ -48,7 +49,45 @@ const cn = (dn: string) => dn.match(/CN=([^,]+)/)?.[1] ?? dn;
 
 const border = "1px solid var(--seed-color-stroke-neutral-muted)";
 
-function Row({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
+// Seed has no copy glyph; two overlapping rounded squares, drawn to match the 24px line icons.
+// Sized explicitly: Seed's Icon/PrefixIcon wrappers only size their own icon components.
+const IconCopy = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="9" y="9" width="11" height="11" rx="2.5" />
+    <path d="M15 9V6.5A2.5 2.5 0 0 0 12.5 4h-6A2.5 2.5 0 0 0 4 6.5v6A2.5 2.5 0 0 0 6.5 15H9" />
+  </svg>
+);
+
+// Writes to the clipboard and reports "copied" for a moment so the caller can swap its icon.
+function useCopy() {
+  const [copied, setCopied] = useState(false);
+  const copy = (text: string) => {
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+    }, () => {});
+  };
+  return [copied, copy] as const;
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, copy] = useCopy();
+  return (
+    <button
+      type="button"
+      aria-label={copied ? t.copied : t.copy}
+      title={copied ? t.copied : t.copy}
+      onClick={() => copy(text)}
+      style={{ background: "none", border: 0, padding: 4, cursor: "pointer", display: "flex", color: "var(--seed-color-fg-neutral-subtle)" }}
+    >
+      {copied ? <Icon svg={<IconCheckmarkLine />} size="x4" color="fg.positive" /> : <IconCopy />}
+    </button>
+  );
+}
+
+type RowData = { label: string; value: string; mono?: boolean };
+
+function Row({ label, value, mono }: RowData) {
   return (
     <tr style={{ borderTop: border }}>
       <th
@@ -72,6 +111,7 @@ function Row({ label, value, mono }: { label: string; value: string; mono?: bool
           {value || "-"}
         </Text>
       </td>
+      <td style={{ width: 32, padding: "6px 8px 6px 0", verticalAlign: "top" }}>{value && <CopyButton text={value} />}</td>
     </tr>
   );
 }
@@ -90,6 +130,34 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function CertCard({ cert }: { cert: CertInfo }) {
+  const sections: [string, RowData[]][] = [
+    [t.general, [
+      { label: "Subject", value: cert.subject },
+      { label: "Issuer", value: cert.issuer },
+      { label: "Serial", value: cert.serial, mono: true },
+      { label: "Version", value: `V${cert.version}` },
+      { label: t.validFrom, value: cert.not_before },
+      { label: t.validUntil, value: cert.not_after },
+      { label: t.signatureAlgorithm, value: cert.signature_algorithm },
+      { label: t.publicKey, value: cert.public_key },
+    ]],
+    [t.fingerprints, [
+      { label: "SHA-256", value: cert.sha256, mono: true },
+      { label: "SHA-1", value: cert.sha1, mono: true },
+    ]],
+    [t.extensions, [
+      { label: "SAN", value: cert.san.join(", ") },
+      { label: "Key Usage", value: cert.key_usage.join(", ") },
+      { label: "Extended Key Usage", value: cert.extended_key_usage.join(", ") },
+      { label: t.allExtensions, value: cert.extensions.map((e) => (e.critical ? `${e.name} (critical)` : e.name)).join(", ") },
+    ]],
+  ];
+  // "Copy all": one `label: value` line per row, blank line between sections.
+  const allText = sections
+    .map(([, rows]) => rows.map((r) => `${r.label}: ${r.value || "-"}`).join("\n"))
+    .join("\n\n");
+  const [copiedAll, copyAll] = useCopy();
+
   return (
     <VStack gap="x6" p="x5" bg="bg.layerDefault" borderRadius="r3">
       <HStack gap="x2" alignItems="center" flexWrap="wrap">
@@ -100,33 +168,17 @@ function CertCard({ cert }: { cert: CertInfo }) {
           {cert.is_valid_now ? t.valid : t.invalid}
         </Badge>
         {cert.is_ca && <Badge tone="informative" variant="weak">CA</Badge>}
+        <ActionButton variant="neutralWeak" size="small" layout="withText" onClick={() => copyAll(allText)} style={{ marginLeft: "auto" }}>
+          <PrefixIcon svg={copiedAll ? <IconCheckmarkLine /> : <IconCopy />} />
+          {copiedAll ? t.copied : t.copyAll}
+        </ActionButton>
       </HStack>
 
-      <Section title={t.general}>
-        <Row label="Subject" value={cert.subject} />
-        <Row label="Issuer" value={cert.issuer} />
-        <Row label="Serial" value={cert.serial} mono />
-        <Row label="Version" value={`V${cert.version}`} />
-        <Row label={t.validFrom} value={cert.not_before} />
-        <Row label={t.validUntil} value={cert.not_after} />
-        <Row label={t.signatureAlgorithm} value={cert.signature_algorithm} />
-        <Row label={t.publicKey} value={cert.public_key} />
-      </Section>
-
-      <Section title={t.fingerprints}>
-        <Row label="SHA-256" value={cert.sha256} mono />
-        <Row label="SHA-1" value={cert.sha1} mono />
-      </Section>
-
-      <Section title={t.extensions}>
-        <Row label="SAN" value={cert.san.join(", ")} />
-        <Row label="Key Usage" value={cert.key_usage.join(", ")} />
-        <Row label="Extended Key Usage" value={cert.extended_key_usage.join(", ")} />
-        <Row
-          label={t.allExtensions}
-          value={cert.extensions.map((e) => (e.critical ? `${e.name} (critical)` : e.name)).join(", ")}
-        />
-      </Section>
+      {sections.map(([title, rows]) => (
+        <Section key={title} title={title}>
+          {rows.map((r) => <Row key={r.label} {...r} />)}
+        </Section>
+      ))}
     </VStack>
   );
 }
