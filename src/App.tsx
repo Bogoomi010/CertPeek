@@ -78,7 +78,15 @@ function CopyButton({ text }: { text: string }) {
       aria-label={copied ? t.copied : t.copy}
       title={copied ? t.copied : t.copy}
       onClick={() => copy(text)}
-      style={{ background: "none", border: 0, padding: 4, cursor: "pointer", display: "flex", color: "var(--seed-color-fg-neutral-subtle)" }}
+      style={{
+        border: 0,
+        padding: 4,
+        borderRadius: 6,
+        cursor: "pointer",
+        display: "flex",
+        background: copied ? "var(--seed-color-bg-positive-weak)" : "var(--seed-color-bg-brand-weak)",
+        color: copied ? "var(--seed-color-fg-positive)" : "var(--seed-color-fg-brand)",
+      }}
     >
       {copied ? <Icon svg={<IconCheckmarkLine />} size="x4" color="fg.positive" /> : <IconCopy />}
     </button>
