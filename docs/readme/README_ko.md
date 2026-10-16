@@ -102,44 +102,44 @@ yarn build:ko   # 한국어 UI
 
 ```mermaid
 flowchart TB
-    user((사용자))
+    user((User))
 
-    subgraph entry["앱 진입"]
-        tauri["Tauri 런타임<br/>lib.rs"]
-        react["React 마운트<br/>main.tsx"]
+    subgraph entry["App entry"]
+        tauri["Tauri runtime<br/>lib.rs"]
+        react["React mount<br/>main.tsx"]
     end
 
-    subgraph ui["인증서 화면"]
-        app["첨부 · 정보 화면<br/>App.tsx"]
-        copy["행 복사 / 전체 복사<br/>App.tsx"]
-        seed["Seed Design 래퍼<br/>seed-design/ui"]
-        strings["빌드 시 고정 문자열<br/>strings.ts"]
+    subgraph ui["Certificate interface"]
+        app["Drop & details UI<br/>App.tsx"]
+        copy["Copy row / Copy all<br/>App.tsx"]
+        seed["Seed Design wrappers<br/>seed-design/ui"]
+        strings["Build-time strings<br/>strings.ts"]
     end
 
-    subgraph backend["파싱 백엔드 (Rust)"]
-        cmd["parse_cert 커맨드<br/>lib.rs"]
-        detect["형식 판별<br/>PEM · DER · PKCS#35;12"]
-        fields["필드 추출<br/>subject, 유효기간, SAN, 지문"]
+    subgraph backend["Parsing backend (Rust)"]
+        cmd["parse_cert command<br/>lib.rs"]
+        detect["Format detection<br/>PEM · DER · PKCS#35;12"]
+        fields["Field extraction<br/>subject, validity, SAN, fingerprints"]
     end
 
     x509[["x509-parser"]]
     p12[["p12-keystore"]]
     result[("CertInfo[]")]
 
-    user -- "파일 드롭 / 선택" --> app
-    react -- 렌더링 --> app
-    tauri -- "커맨드 등록" --> cmd
+    user -- "drops / picks a file" --> app
+    react -- renders --> app
+    tauri -- "registers command" --> cmd
     app --> copy
     app --> seed
     app --> strings
     app -- "invoke(parse_cert, bytes, password?)" --> cmd
     cmd --> detect
     detect -- "PEM / DER" --> x509
-    detect -- "PKCS#35;12 (비밀번호)" --> p12
+    detect -- "PKCS#35;12 (password)" --> p12
     x509 --> fields
     p12 --> fields
     fields --> result
-    result -- "탭 + 표" --> app
+    result -- "tabs + tables" --> app
 ```
 
 파일은 PC 밖으로 나가지 않습니다. 웹뷰가 읽어 Rust 커맨드에 바이트를 넘기고, 돌아온 결과만 그립니다.
